@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProgramTypeCode__c</fullName>
+    <description>Will indicate if the vehicle was purchased as part of a program, such as Certified Pre-Owned.</description>
+    <externalId>false</externalId>
+    <label>Program Type Code</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>C&amp;C</fullName>
+                <default>false</default>
+                <label>C&amp;C</label>
+            </value>
+            <value>
+                <fullName>CPB</fullName>
+                <default>false</default>
+                <label>CPB</label>
+            </value>
+            <value>
+                <fullName>CPO</fullName>
+                <default>false</default>
+                <label>CPO</label>
+            </value>
+            <value>
+                <fullName>CTP</fullName>
+                <default>false</default>
+                <label>CTP</label>
+            </value>
+            <value>
+                <fullName>UNK</fullName>
+                <default>false</default>
+                <label>UNK</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

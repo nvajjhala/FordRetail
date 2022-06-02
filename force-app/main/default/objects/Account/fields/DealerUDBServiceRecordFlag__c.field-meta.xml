@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerUDBServiceRecordFlag__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This flag identifies whether or not customer paid service records have been received for this dealer at some point in time. (Y/N)</description>
+    <externalId>false</externalId>
+    <label>Dealer UDB Service Record Flag</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

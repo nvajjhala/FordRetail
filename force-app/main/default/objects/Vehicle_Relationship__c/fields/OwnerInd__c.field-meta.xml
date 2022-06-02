@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OwnerInd__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates that for this vehicle cycle, this consumer is the owner of the vehicle.  Y = Yes, N = No</description>
+    <externalId>false</externalId>
+    <label>Owner Indicator</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

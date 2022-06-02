@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BEVEnrollmentFlag__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether Dealer is enrolled in BEV(Battery Electric Vehicles) for North America.Possible values - TRUE,FALSE or N/A</description>
+    <externalId>false</externalId>
+    <label>BEV Enrollment Eligible</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DonorVolunteer__c</fullName>
+    <description>Indicates households likelihood to include charity volunteers. Based on the statistical analysis of consumers that have reported to volunteer time to charities. Values 1-99, 1=highest likelihood. Values 01-09, Top Ranked Values 10-19 Values 20-29 Values 30-39 Values 40-49 Values 50-59Values 60-69 Values 70-79 Values 80-89 Values 90-99, Bottom RankedValues 00, Unknown</description>
+    <externalId>false</externalId>
+    <label>Donor Volunteer Score</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01-09</fullName>
+                <default>false</default>
+                <label>01-09</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,23 @@
+<template>
+  <lightning-card
+    variant="Narrow"
+    title="Current Vehicle"
+    icon-name="standard:work_order"
+  >
+    <p class="slds-var-p-horizontal_small">
+      <template if:false={vehicle}> Loading Vehicle Details... </template>
+      <template if:true={vehicle}>
+        <lightning-layout multiple-rows="true">
+          <template for:each={vehValues} for:item="item">
+            <lightning-layout-item size={item.size} key={item.id}>
+              <div class="slds-var-p-around_small">
+                <p class="slds-text-title">{item.title}</p>
+                <p class="slds-text-body_regular slds-truncate">{item.value}</p>
+              </div>
+            </lightning-layout-item>
+          </template>
+        </lightning-layout>
+      </template>
+    </p>
+  </lightning-card>
+</template>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SiriusFlag__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>sirius flag</description>
+    <externalId>false</externalId>
+    <label>Sirius Flag</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerSalesCodeReasonDescr__c</fullName>
+    <description>Textual description of the Sales Code Reason.  The Sales Code Reason is used to identify why a Dealer Sales Code was created.</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Dealer Sales Code Reason Descr</label>
+    <length>50</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

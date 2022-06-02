@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FordPassOptOut__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>If the Consumer has a FordPass Preference Opt-in available,set this value to &apos;Y&apos;.If the Consumer does not have a FordPass Preference opt-in,set this value to &apos;N&apos;</description>
+    <externalId>false</externalId>
+    <label>Ford Pass Opt Out</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

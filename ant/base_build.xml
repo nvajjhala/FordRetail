@@ -1,0 +1,445 @@
+<project name="sfbuild" default="test" basedir="." 
+xmlns:sf="antlib:com.salesforce" 
+xmlns:ml="org.missinglink.ant.task.http.HttpClientTask"
+xmlns:if="ant:if"
+xmlns:unless="ant:unless" >
+
+    <dirname property="customBasedir" file="${ant.file.sfbuild}"/>
+
+    <property name="scriptsDir" value="${customBasedir}/antScripts"/>
+    <property name="antDir" value="${customBasedir}"/>
+    <property name="libDir" value="${customBasedir}/lib"/>
+    <property name="processorsDir" value="${customBasedir}/processors"/>
+    <property file="build.properties"/>
+    <property environment="env"/>
+
+    <!-- Setting default value for username, password and session id properties to empty string 
+         so unset values are treated as empty. Without this, ant expressions such as ${sf.username}
+         will be treated literally.
+    -->
+    <condition property="sf.username" value=""> 
+        <and>
+            <not> <isset property="sf.username"/> </not> 
+            <not> <isset property="env.TARGET_ENV"/> </not> 
+        </and>
+    </condition>
+    <condition property="sf.password" value=""> 
+        <and>
+            <not> <isset property="sf.password"/> </not> 
+            <not> <isset property="env.TARGET_ENV"/> </not> 
+        </and>
+    </condition>
+    <condition property="sf.sessionId" value=""> <not> <isset property="sf.sessionId"/> </not> </condition>
+    <condition property="sf.maxPoll" value="400"> <not> <isset property="sf.maxPoll"/> </not> </condition>
+    <condition property="sf.pollWaitMillis" value="15000"> <not> <isset property="sf.pollWaitMillis"/> </not> </condition>
+    <condition property="sf.deployRoot" value="codepkg"> <not> <isset property="sf.deployRoot"/> </not> </condition>
+
+    <condition property="isFull2">
+        <and>
+            <equals arg1="${env.TARGET_ENV}" arg2="full2" trim="true" forcestring="true" />
+            <available file="${sf.deployRoot}/profiles/PSOR Integration User.profile" property="full2PrerequisitesExist"/>
+        </and>
+    </condition>
+    <condition property="isPartial">
+        <equals arg1="${env.TARGET_ENV}" arg2="partial" trim="true" forcestring="true" />
+    </condition>
+
+    <target name="setTargetEnvProps" if="env.TARGET_ENV">
+        <propertycopy name="sf.username" from="env.${env.TARGET_ENV}_USERNAME" />
+        <propertycopy name="sf.password" from="env.${env.TARGET_ENV}_PASSWORD" />
+    </target>
+
+
+    <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+        <classpath>
+            <pathelement location="${libDir}/ant-salesforce.jar" />        	
+        </classpath>
+    </taskdef>
+
+    <taskdef name="http" uri="org.missinglink.ant.task.http.HttpClientTask" classname="org.missinglink.ant.task.http.HttpClientTask" classpath="${libDir}/ml-ant-http-1.1.3.jar"/>
+	
+    <macrodef name="propertycopy">
+        <attribute name="name"/>
+        <attribute name="from"/>
+        <sequential>
+            <property name="@{name}" value="${@{from}}"/>
+        </sequential>
+    </macrodef>
+    <macrodef name="executeAnonymous" description="Invoke ExecuteAnonymous using Salesforce Tooling API">
+        <attribute name="username" description="Salesforce user name."/>
+        <attribute name="password" description="Salesforce password."/>
+        <attribute name="serverurl" description="Salesforce endpoint."/>
+        <text name="apexcode"/>
+        <sequential>
+            <!-- Login to populate serverUrl / sessionId / instance -->
+            <login username="@{username}" password="@{password}" serverurl="@{serverurl}" />
+
+                <!-- Execute using HTTP GET -->
+            <ml:http url="${instance}/services/data/v35.0/tooling/executeAnonymous" method="GET" outfile="output/executeAnonymousResult.json"  statusProperty="loginResponseStatus">
+                <headers>
+                    <header name="Authorization" value="Bearer ${sessionId}"/>
+                </headers>
+                <query>
+                    <parameter name="anonymousBody" value="@{apexcode}"/>
+                </query>
+            </ml:http>
+
+            <!-- Fail on error -->
+            <loadfile property="executeAnonymousResult" srcFile="output/executeAnonymousResult.json" />
+            <fail message="Execute Anonymous failed: ${executeAnonymousResult}">
+                <condition>
+                    <resourcecontains resource="output/executeAnonymousResult.json" substring="&quot;success&quot;:false" />
+                </condition>
+            </fail>
+
+            <!-- Show output -->
+            <echo message="${executeAnonymousResult}" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="login" description="Login to salesforce and populate serverUrl / sessionId / instance">
+        <attribute name="username" description="Salesforce user name."/>
+        <attribute name="password" description="Salesforce password."/>
+        <attribute name="serverurl" description="Salesforce endpoint."/>
+        <sequential>
+            <!-- Obtain Session Id via Login SOAP service -->
+            <ml:http url="@{serverurl}/services/Soap/c/34.0" method="POST" failonunexpected="false" outfile="output/loginResult.xml" statusProperty="loginResponseStatus">
+                <headers>
+                    <header name="Content-Type" value="text/xml"/>
+                    <header name="SOAPAction" value="login"/>
+                </headers>
+                <entity><![CDATA[
+                <env:Envelope xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'>
+                    <env:Body>
+                        <sf:login xmlns:sf='urn:enterprise.soap.sforce.com'>
+                            <sf:username>@{username}</sf:username>
+                            <sf:password>@{password}</sf:password>
+                        </sf:login>
+                    </env:Body>
+                </env:Envelope>]]>
+            </entity>
+        </ml:http>
+
+        <!-- Fail on error -->
+        <loadfile property="loginResult" srcFile="output/loginResult.xml" />
+        <fail message="Login failed: ${loginResult}">
+            <condition>
+                <resourcecontains resource="output/loginResult.xml" substring="faultcode" />
+            </condition>
+        </fail>
+
+        <!-- Parse response into properties -->
+        <xmlproperty file="output/loginResult.xml" />
+        <echo file="output/serverUrl.txt" message="${soapenv:Envelope.soapenv:Body.loginResponse.result.serverUrl}" />
+        <echo file="output/sessionId.txt" message="${soapenv:Envelope.soapenv:Body.loginResponse.result.sessionId}" />
+        <echo file="output/instance.txt" message="${soapenv:Envelope.soapenv:Body.loginResponse.result.serverUrl}" />
+        <replaceregexp file="output/instance.txt" match="(https://[^/]+)/.*" replace="\1" />
+        <loadfile property="sessionId" srcFile="output/sessionId.txt" />
+        <loadfile property="instance" srcFile="output/instance.txt" />
+    </sequential>
+</macrodef>
+
+<target name="execPreDeployScript" description="Deploys all package components to dev org">
+    <loadfile property="scriptFile" srcFile="${antDir}/apexscripts/preDeployScript.cls" />
+    <executeAnonymous username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}"><![CDATA[
+        ${scriptFile}
+        ]]></executeAnonymous>
+
+</target>
+
+<target name="execPostDeployScript" description="Deploys all package components to dev org">
+    <loadfile property="scriptFile" srcFile="${antDir}/apexscripts/postDeployScript.cls" />
+    <executeAnonymous username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}"><![CDATA[
+        ${scriptFile}
+        ]]></executeAnonymous>
+
+</target>
+
+    <!-- Define targets for pretasks -->
+    <target name="retrievePreTasks">
+        <exec executable="${scriptsDir}/retrievePreTasks.sh"></exec>
+    </target>
+
+    <!-- Define targets for posttasks -->
+    <target name="retrievePostTasks">
+        <exec executable="${scriptsDir}/retrievePostTasks.sh"></exec>
+    </target>
+    <!-- Test out deploy and retrieve verbs for package 'mypkg' -->
+    <target name="test">
+      <!-- Upload the contents of the "mypkg" package -->
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="mypkg" rollbackOnError="true"/>
+      <mkdir dir="retrieveOutput"/>
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" retrieveTarget="retrieveOutput" packageNames="MyPkg"/>
+    </target>
+
+    <!-- Retrieve an unpackaged set of metadata from your org -->
+    <!-- The file unpackaged/package.xml lists what is to be retrieved -->
+    <target name="retrieveUnpackaged">
+      <mkdir dir="retrieveUnpackaged"/>
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" retrieveTarget="retrieveUnpackaged" unpackaged="unpackaged/package.xml"/>
+    </target>
+
+    <!-- Retrieve all the items of a particular metadata type -->
+    <target name="bulkRetrieve">
+      <sf:bulkRetrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" metadataType="${sf.metadataType}" retrieveTarget="retrieveUnpackaged"/>
+    </target>
+
+    <!-- Retrieve metadata for all the packages specified under packageNames -->
+    <target name="retrievePkg">
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" retrieveTarget="retrieveOutput" packageNames="${sf.pkgName}"/>
+    </target>
+
+    <!-- Deploy the unpackaged set of metadata retrieved with retrieveUnpackaged and run tests in this organization's namespace only-->
+    <target name="deployUnpackaged">
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="retrieveUnpackaged" rollbackOnError="true"/>
+    </target>
+
+    <!-- Deploy a zip of metadata files to the org -->
+    <target name="deployZip">
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" zipFile="${sf.zipFile}" rollbackOnError="true"/>
+    </target>
+
+    <!-- Shows deploying code & running tests for code in directory -->
+    <target name="deployCode">
+      <!-- Upload the contents of the "codepkg" directory, running the tests for just 1 class -->
+        <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="${sf.deployRoot}" testLevel="RunSpecifiedTests" rollbackOnError="true">
+      	 <runTest>SampleDeployClass</runTest> 
+      </sf:deploy>
+    </target>
+	
+	 <!-- Shows deploying code with no TestLevel sepcified -->
+    <target name="deployCodeNoTestLevelSpecified">
+        <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="${sf.deployRoot}" rollbackOnError="true"/>
+    </target>
+	
+	<!-- Shows deploying code and running tests only within the org namespace -->
+	<target name="deployCodeRunLocalTests">
+            <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="${sf.deployRoot}" rollbackOnError="true"  testlevel="RunLocalTests"/>
+	</target>
+	
+    <!-- Shows removing code; only succeeds if done after deployCode -->
+    <target name="undeployCode">
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="removecodepkg"/>
+    </target>
+
+    <!-- Shows retrieving code; only succeeds if done after deployCode -->
+    <target name="retrieveCode">
+      <!-- Retrieve the contents listed in the file codepkg/package.xml into the codepkg directory -->
+        <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" retrieveTarget="${sf.deployRoot}" unpackaged="${sf.deployRoot}/package.xml"/>
+    </target>
+
+    <extension-point name="updateGitRepo" depends="retrievePreTasks, retrieveProfilePerms, retrieveCode, retrievePostTasks"/>
+    <extension-point name="validateGitRepo" depends="setTargetEnvProps, handlePartial, deployCodeCheckOnly"/>
+    <extension-point name="validateGitRepoWithTests" depends="setTargetEnvProps, handlePartial, validateWithTests"/>
+    <extension-point name="deployGitRepo" depends="setTargetEnvProps, deployCodeRunLocalTests"/>
+    <extension-point name="deployGitRepoWithoutTests" depends="setTargetEnvProps, handlePartial, deployCodeNoTestLevelSpecified"/>
+    <extension-point name="quickDeployGitRepo" depends="setTargetEnvProps, quickDeploy"/>
+    <extension-point name="custRetrieveCode" depends="retrieveCode, retrieveProfilePerms, retrieveFlsPerms, mergeProfiles"/>
+
+
+    <!-- special handling for environments -->
+    <target name="handleFull2" if="isFull2">
+        <copy file="${sf.deployRoot}/profiles/PSOR Integration User.profile" tofile="transform.profile" />
+        <xslt in="transform.profile" out="${sf.deployRoot}/profiles/PSOR Integration User.profile" style="${sf.deployRoot}/../processors/full2Transformations.xslt" />
+        <delete file="transform.profile" />
+        <copy file="${sf.deployRoot}/profiles/PSOR Operations Admin.profile" tofile="transform.profile" />
+        <xslt in="transform.profile" out="${sf.deployRoot}/profiles/PSOR Operations Admin.profile" style="${sf.deployRoot}/../processors/full2Transformations.xslt" />
+        <delete file="transform.profile" />
+    </target>
+
+    <target name="handlePartial" if="isPartial">
+        <copy file="${sf.deployRoot}/package.xml" tofile="partial_package.xml" />
+        <xslt in="partial_package.xml" out="${sf.deployRoot}/package.xml" style="${sf.deployRoot}/../processors/partial_packageTransform.xslt" />
+        <delete file="partial_package.xml" />
+    </target>
+
+    <!-- special handling for permissions -->
+    <target name="retrieveProfilePerms">
+        <local name="profileTmpDir" />
+        <property name="profileTmpDir" value="${sf.deployRoot}/../tmp" />
+        <mkdir dir="${profileTmpDir}" />
+        <mkdir dir="${profileTmpDir}/output" />
+        <copy file="${sf.deployRoot}/../processors/package.xml" todir="${profileTmpDir}" />
+        <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" retrieveTarget="${profileTmpDir}" unpackaged="${profileTmpDir}/package.xml"/>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="edit" />
+            <arg value="${sf.deployRoot}/profiles" />
+        </exec>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="edit" />
+            <arg value="${profileTmpDir}/profiles" />
+        </exec>
+
+
+        <xslt basedir="${sf.deployRoot}/profiles" destdir="${profileTmpDir}/output" 
+        filenameparameter="current_filename"
+            failOnTransformationError="false"
+        style="${sf.deployRoot}/../processors/legacy_profiles.xslt">
+        <param name="current_dir" type="STRING" expression="${customBasedir}/${profileTmpDir}/profiles/" />
+            <outputproperty name="indent" value="yes"/>
+            <outputproperty name="{http://xml.apache.org/xslt}indent-amount" value="4"/>
+            <mapper type="glob" from="*.profile" to="*.profile"/>
+        </xslt>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="indent" />
+            <arg value="${profileTmpDir}/output" />
+        </exec>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="undo" />
+            <arg value="${sf.deployRoot}/profiles" />
+        </exec>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="undo" />
+            <arg value="${profileTmpDir}/output" />
+        </exec>
+        <copy todir="${sf.deployRoot}/profiles">
+            <fileset dir="${profileTmpDir}/output"
+                     excludes="**/Admin.profile"
+                />
+        </copy>
+        <delete dir="${profileTmpDir}" />
+        <copy file="${sf.deployRoot}/profiles/Admin.profile" tofile="transform.profile" />
+        <xslt in="transform.profile" out="${sf.deployRoot}/profiles/Admin.profile" style="${sf.deployRoot}/../processors/standard_profiles.xslt" />
+        <delete file="transform.profile" />
+    </target>
+
+    <!-- special handling for fls permissions -->
+    <target name="retrieveFlsPerms">
+        <local name="profileTmpDir" />
+        <property name="profileTmpDir" value="${sf.deployRoot}/../tmp" />
+        <mkdir dir="${profileTmpDir}" />
+        <mkdir dir="${profileTmpDir}/output" />
+        <copy file="${sf.deployRoot}/../processors/fls_package.xml" todir="${profileTmpDir}" />
+        <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" retrieveTarget="${profileTmpDir}" unpackaged="${profileTmpDir}/fls_package.xml"/>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="edit" />
+            <arg value="${sf.deployRoot}/profiles" />
+        </exec>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="edit" />
+            <arg value="${profileTmpDir}/profiles" />
+        </exec>
+
+
+        <xslt basedir="${sf.deployRoot}/profiles" destdir="${profileTmpDir}/output" 
+        filenameparameter="current_filename"
+            failOnTransformationError="false"
+        style="${sf.deployRoot}/../processors/fls_profiles.xslt">
+        <param name="current_dir" type="STRING" expression="${customBasedir}/${profileTmpDir}/profiles/" />
+            <outputproperty name="indent" value="yes"/>
+            <outputproperty name="{http://xml.apache.org/xslt}indent-amount" value="4"/>
+            <mapper type="glob" from="*.profile" to="*.profile"/>
+        </xslt>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="indent" />
+            <arg value="${profileTmpDir}/output" />
+        </exec>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="undo" />
+            <arg value="${sf.deployRoot}/profiles" />
+        </exec>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="undo" />
+            <arg value="${profileTmpDir}/output" />
+        </exec>
+        <copy todir="${sf.deployRoot}/profiles">
+            <fileset dir="${profileTmpDir}/output"
+                     excludes="**/Admin.profile"
+                />
+        </copy>
+        <delete dir="${profileTmpDir}" />
+        <copy file="${sf.deployRoot}/profiles/Admin.profile" tofile="transform.profile" />
+        <xslt in="transform.profile" out="${sf.deployRoot}/profiles/Admin.profile" style="${sf.deployRoot}/../processors/standard_profiles.xslt" />
+        <delete file="transform.profile" />
+    </target>
+
+    <!-- special handling for fls permissions -->
+    <target name="mergeProfiles">
+        <local name="profileTmpDir" />
+        <local name="profileSrcDir" />
+        <local name="profileMergeDir" />
+        <property name="profileTmpDir" value="${sf.deployRoot}/../tmp" />
+        <property name="profileSrcDir" value="${sf.deployRoot}/profiles" />
+        <property name="profileMergeDir" value="${sf.deployRoot}/../profiles_merge" />
+
+        <mkdir dir="${profileTmpDir}" />
+        <mkdir dir="${profileTmpDir}/output" />
+        <copy todir="${profileTmpDir}">
+            <fileset dir="${profileMergeDir}"
+                includes="*.profile" />
+        </copy>
+
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="edit" />
+            <arg value="${profileSrcDir}" />
+        </exec>
+        <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+            <arg value="edit" />
+            <arg value="${profileMergeDir}" />
+        </exec>
+
+
+        <xslt basedir="${profileSrcDir}" destdir="${profileTmpDir}/output" 
+            filenameparameter="current_filename"
+            failOnTransformationError="false"
+            style="${sf.deployRoot}/../processors/manual_add_profiles.xslt">
+        <param name="current_dir" type="STRING" expression="${customBasedir}/${profileTmpDir}/" />
+        <outputproperty name="indent" value="yes"/>
+        <outputproperty name="{http://xml.apache.org/xslt}indent-amount" value="4"/>
+        <mapper type="glob" from="*.profile" to="*.profile"/>
+    </xslt>
+    <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+        <arg value="indent" />
+        <arg value="${profileTmpDir}/output" />
+    </exec>
+    <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+        <arg value="undo" />
+        <arg value="${profileSrcDir}" />
+    </exec>
+    <exec executable="${sf.deployRoot}/../processors/renameProfiles.sh">
+        <arg value="undo" />
+        <arg value="${profileMergeDir}" />
+    </exec>
+    <copy todir="${profileSrcDir}" overwrite="true" >
+        <fileset dir="${profileTmpDir}/output"
+            includes="*.profile" />
+    </copy>
+    <delete dir="${profileTmpDir}" />
+</target>
+    <!-- Shows deploying code, running all tests, and running tests (1 of which fails), and logging. -->
+    <target name="deployCodeFailingTest">
+      <!-- Upload the contents of the "codepkg" package, running all tests -->
+        <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="${sf.deployRoot}" testLevel="RunAllTestsInOrg" rollbackOnError="true" logType="Debugonly"/>
+    </target>
+
+    <!-- Shows check only; never actually saves to the server -->
+    <target name="deployCodeCheckOnly">
+        <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="${sf.deployRoot}" checkOnly="true"/>
+    </target>
+
+    <target name="validateWithTests">
+        <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" deployRoot="${sf.deployRoot}" checkOnly="true" testLevel="RunLocalTests" />
+    </target>
+	
+	<!-- Shows quick deployment of recent validation. Set the property sf.recentValidationId to your recent check only deployment Id -->
+	<target name="quickDeploy">
+	  <sf:deployRecentValidation  username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" recentValidationId="${sf.recentValidationId}"/>
+	</target>
+	
+	<!-- Shows cancel deployment of deploy request either pending or in progress. Set property sf.requestId to Id of pending or in progress deploy request -->
+	<target name="cancelDeploy">
+	  <sf:cancelDeploy  username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" requestId="${sf.requestId}"/>
+	</target>
+
+	<!-- Retrieve the information of all items of a particular metadata type -->
+    <target name="listMetadata">
+      <sf:listMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" metadataType="${sf.metadataType}"/>
+    </target>
+
+	<!-- Retrieve the information on all supported metadata type -->
+    <target name="describeMetadata">
+      <sf:describeMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}"/>
+    </target>
+</project>

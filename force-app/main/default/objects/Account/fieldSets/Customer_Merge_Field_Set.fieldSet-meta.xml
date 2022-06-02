@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FieldSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Merge_Field_Set</fullName>
+    <description>This field set is used to populate the empty field on Winner Accounts from the corresponding Loser Accounts</description>
+    <displayedFields>
+        <field>PersonEmail</field>
+        <isFieldManaged>false</isFieldManaged>
+        <isRequired>false</isRequired>
+    </displayedFields>
+    <displayedFields>
+        <field>Phone</field>
+        <isFieldManaged>false</isFieldManaged>
+        <isRequired>false</isRequired>
+    </displayedFields>
+    <label>Customer Merge Field Set</label>
+</FieldSet>

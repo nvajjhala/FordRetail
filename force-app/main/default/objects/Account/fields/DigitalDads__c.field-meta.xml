@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DigitalDads__c</fullName>
+    <description>Digital Dads tend to be more tech-savvy and resourceful than their counterparts without children when it comes to online and mobile activities. Digital Dads indentifies a households likelihood to contain a Dad that is the Primary Decision Maker, frequently online, and a frequent social networkers. 1=Extremely Likely,2=Highly Likely,3=Very Likely,4=More than Likely,5=Likely,6=Somewhat Likely,7=Very Unlikely,8=Highly Unlikely,9=Extremely Unlikely,</description>
+    <externalId>false</externalId>
+    <label>Digital Dads</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1</fullName>
+                <default>false</default>
+                <label>1</label>
+            </value>
+            <value>
+                <fullName>2</fullName>
+                <default>false</default>
+                <label>2</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

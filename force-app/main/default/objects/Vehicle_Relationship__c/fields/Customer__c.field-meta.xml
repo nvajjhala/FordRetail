@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer__c</fullName>
+    <description>Consumer Number. SCA-C generated 11 digit sequence number that increments by 1 and then append 50 to the end of it. Started with 10000000050</description>
+    <externalId>false</externalId>
+    <label>Customer</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Vehicle Relationships (Customer)</relationshipLabel>
+    <relationshipName>Vehicle_Relationships</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

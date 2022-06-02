@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerBlackLabelInd__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Identifies whether the Dealer is a black label certified dealer or not.values will be Y or space.</description>
+    <externalId>false</externalId>
+    <label>Black Label Indicator</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

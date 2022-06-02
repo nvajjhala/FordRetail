@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerCmUSAflmActiveFlag__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>A flag used to identify USA dealers that meet the Campaign Management Active Dealer criteria.</description>
+    <externalId>false</externalId>
+    <label>Dealer CM USA flm Active Flag</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

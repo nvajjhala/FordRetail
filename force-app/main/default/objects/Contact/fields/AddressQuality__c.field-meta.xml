@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AddressQuality__c</fullName>
+    <description>Address Quality Indicators provide a measure of address deliverability according to the USPS Delivery Sequence File (DSF). Using outcomes of DSF footnotes and other Experian proprietary logic, we assign an Address Quality Index (AQI) to communicate the qu E=Excellent,G=Good,M=Marginal,N=Phone only,S=Satisfactory,</description>
+    <externalId>false</externalId>
+    <label>Address Quality</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>E</fullName>
+                <default>false</default>
+                <label>E</label>
+            </value>
+            <value>
+                <fullName>G</fullName>
+                <default>false</default>
+                <label>G</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

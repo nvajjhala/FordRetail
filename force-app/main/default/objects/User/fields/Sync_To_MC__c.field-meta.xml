@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sync_To_MC__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Field indicating that the User is eligible for synchronization to Marketing Cloud. The field should be unchecked for full sandbox org records that were copied from the production org in order to avoid SubscriberKey conflicts in Marketing Cloud.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Field indicating that the User is eligible for synchronization to Marketing Cloud. The field should be unchecked for full sandbox org records that were copied from the production org in order to avoid SubscriberKey conflicts in Marketing Cloud.</inlineHelpText>
+    <label>Sync To MC</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

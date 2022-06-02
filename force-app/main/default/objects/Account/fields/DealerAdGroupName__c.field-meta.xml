@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerAdGroupName__c</fullName>
+    <description>The name describing a Dealer Advertising Group. DAG is a collection of SALES POINTs within a REGION for remittance of dealer advertising funds (FDAF, LMDA, etc)</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Dealer Ad Group Name</label>
+    <length>50</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

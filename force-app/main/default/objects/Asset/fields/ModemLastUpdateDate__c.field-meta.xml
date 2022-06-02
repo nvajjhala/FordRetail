@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ModemLastUpdateDate__c</fullName>
+    <description>Last updated date of the modem</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Modem Last Update Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

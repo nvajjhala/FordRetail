@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EthnicLanguage__c</fullName>
+    <description>Based on a comprehensive predictive name analysis process that identifies language preference. 00=Unknown,01=English,03=Danish,04=Swedish,05=Norwegian,06=Finnish,07=Icelandic,08=Dutch,09=Flemish/Walloon,10=German,12=Hungarian,13=Czech,14=Slovak,17=French,19=Italian,20=Spanish,21=Portuguese,22=Polish,23=Estonian,24=Latvian,25=Lithuanian,27=Georgian,29=Armenian,30=Russian,31=Turkish,32=Kurdish,33=Greek,34=Farsi,35=Moldovan,36=Bulgarian,37=Romanian,38=Albanian,40=Slovenian,41=Serbo-Croatian,44=Azeri,45=Kazakh,46=Pashtu/Pashto,47=Urdu,48=Bengali/Bangla,49=Bahasa Indonesia,51=Burmese,52=Mongolian,53=Mandarin,54=Cantonese,56=Korean,57=Japanese,58=Thai,59=Bahasa Melayu,60=Lao,61=Khmer,62=Vietnamese,63=Sinhala,64=Uzbek,65=Hmong,68=Hebrew,70=Arabic,72=Turkmen,74=Kirghiz,7A=Hindi,7D=Telugu,7E=Nepali,7F=Samoan,7H=Inuktitut,80=Tongan,8G=Tibetan,8I=Siswati,8J=Zulu,8K=Xhosa,8M=Afrikaans,8O=Comorian/Shikomoro,8S=Twi (Ashanti ethnicity),8T=Swahili,8X=Hausa,92=Bantu,94=Dzongkha,95=Amharic,9E=Somali,9F=</description>
+    <externalId>false</externalId>
+    <label>Ethnic Language</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>00</fullName>
+                <default>false</default>
+                <label>00</label>
+            </value>
+            <value>
+                <fullName>01</fullName>
+                <default>false</default>
+                <label>01</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

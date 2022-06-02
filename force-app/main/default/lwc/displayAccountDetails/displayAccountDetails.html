@@ -1,0 +1,24 @@
+<template>
+    <lightning-card
+      variant="Narrow"
+      title="Account Details"
+      icon-name="standard:partner_marketing_budget"
+    >
+      <p class="slds-var-p-horizontal_small">
+        <template if:false={account}> Loading Account Details... </template>
+        <template if:true={account}>
+          <lightning-layout multiple-rows="true">
+            <template for:each={accountValues} for:item="item">
+              <lightning-layout-item size={item.size} key={item.id}>
+                <div class="slds-var-p-around_small">
+                  <p class="slds-text-title">{item.title}</p>
+                  <p class="slds-text-body_regular slds-truncate">{item.value}</p>
+                </div>
+              </lightning-layout-item>
+            </template>
+          </lightning-layout>
+        </template>
+      </p>
+    </lightning-card>
+  </template>
+  

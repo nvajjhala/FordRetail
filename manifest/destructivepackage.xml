@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns=http://soap.sforce.com/2006/04/metadata>
+    <types>
+        <members>Contact.ExternalIdSCAID__c</members>
+        <members>Contact.ExternalIdGUID__c</members>
+        <members>Account.AutomotiveInterest__c</members>
+        <members>Account.DealerMarketSharePercent__c</members>
+        <members>Account.Dealer_Key__c</members>
+        <members>Account.DwellingType__c</members>
+        <members>Account.EstimatedIncomeAmount__c</members>
+        <members>Account.OnlineLinkolnGUID__c</members>
+        <members>Asset.OnershipCycleNumber__c</members>
+        <members>Contact.HasOptedOutOfEmail__c</members>
+        <members>Contact.BrandOptn__c</members>
+        <members>Contact.EducationMode__c</members>
+        <members>Contact.CensusAddressType__c</members>
+        <members>Contact.CensusBlockCode__c</members>
+        <members>Contact.CensusCountyCode__c</members>
+        <members>Contact.CensusStateCode__c</members>
+        <members>Contact.CensusTractCode__c</members>
+        <members>Contact.FordPassOptIn__c</members>
+        <members>Order.OrderDate__c</members>
+        <members>Vehicle_Relationship__c.LocalSalesType__c</members>
+        <members>Vehicle_Relationship__c.OwnershipSourceCode__c</members>
+        <members>Vehicle_Relationship__c.SalesSequenceNumber__c</members>
+        <members>Vehicle_Relationship__c.SecondarySellingDealerKey__c</members>
+        <members>Vehicle_Relationship__c.SellingDealerSalespersonCD__c</members> 
+        <name>CustomField</name>
+    </types>
+</Package>

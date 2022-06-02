@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Stores Household and Dwelling Data</description>
+    <label>Household and Dwelling Data</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <quickActionLayout>
+        <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>CurrentResidenceStartDate__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>DemographicKey__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>HouseholdVerificationDate__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>DigitalDads__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>DigitalMoms__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>DonorVolunteer__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>DIY__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>Outdoor__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+    </quickActionLayout>
+    <type>Update</type>
+</QuickAction>

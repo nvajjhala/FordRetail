@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeliveryDesignator__c</fullName>
+    <description>Contains the delivery point verification codes which are used to determine if the address has been verified against an additional source.</description>
+    <externalId>false</externalId>
+    <label>Delivery Designator</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Example Q</fullName>
+                <default>false</default>
+                <label>Example Q</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

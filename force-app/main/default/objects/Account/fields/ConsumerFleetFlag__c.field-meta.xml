@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConsumerFleetFlag__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This customer fleet flag indicates that the customer (individual or business) owns at least one fleet or company-owned vehicle. The possible values are &quot;Y&quot; -- the customer owns at least one fleet or company owned vehicle, and &quot;N&quot; -- the customer doesnt own the above.</description>
+    <externalId>false</externalId>
+    <label>Consumer Fleet Flag</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

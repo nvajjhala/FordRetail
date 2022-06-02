@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProcessedTime__c</fullName>
+    <description>Date/timestamp when customer merge process completed in Salesforce core.</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Processed Time</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

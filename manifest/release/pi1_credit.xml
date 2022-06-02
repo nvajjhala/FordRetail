@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ApigeeAuthProvider</members>
+        <members>ApigeeAuthProviderTest</members>
+        <members>AccountDetails</members>
+        <members>GetAccountDetails</members>
+        <members>GetAccountDetailsMockGenerator</members>
+        <members>GetAccountDetailsTest</members>
+        <members>CustomerDetails</members>
+        <members>GetCustomerDetails</members>
+        <members>GetCustomerDetailsMockGenerator</members>
+        <members>GetCustomerDetailsTest</members>
+        <members>GetVehicleDetails</members>
+        <members>GetVehicleDetailsMockGenerator</members>
+        <members>GetVehicleDetailsTest</members>
+        <members>VehicleDetails</members>
+        <members>GetDealershipDetails</members>
+        <members>GetDealershipDetailsTest</members>
+        <members>FordDirectDeliverServiceMockGenerator</members>
+        <members>FordDirectService</members>
+        <members>FordDirectServiceTest</members>
+        <members>FordDirectService</members>
+        <members>FordErrorResponse</members>
+        <members>VehicleToken</members>
+        <members>FordDirectDeliverRequest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Chat_Setup_Flow_CORS</members>
+        <name>CorsWhitelistOrigin</name>
+    </types>
+    <types>
+    <members>Account.Backup_Sales_Representative__c</members>
+    <members>Account.Participating_Programs__c</members>
+    <members>Account.Primary_Sales_Representative__c</members>
+    <members>Account.Sales_Hours__c</members>
+    <members>Account.Services_Offered__c</members>
+        <members>Apigee_Auth_Provider__mdt.Access_Token_URL__c</members>
+        <members>Apigee_Auth_Provider__mdt.Auth_Provider_Name__c</members>
+        <members>Apigee_Auth_Provider__mdt.Callback_URL__c</members>
+        <members>Apigee_Auth_Provider__mdt.Client_Id__c</members>
+        <members>Apigee_Auth_Provider__mdt.Client_Secret__c</members>
+        <members>Apigee_Auth_Provider__mdt.Resource__c</members>
+        <members>Apigee_Auth_Provider__mdt.Scope__c</members>
+        <members>Apigee_Auth_Provider__mdt.Use_JSON_Encoding__c</members>
+        <members>LiveChatTranscript.Receivable_Acct_Number__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I8K0000008OIK_8929154</members>
+        <members>LA_Waiting_Error_ErrorNoAgentBodyApology_04I8K0000008OIK_6442543</members>
+        <members>LA_Waiting_Error_ErrorNoAgentBodyRequest_04I8K0000008OIK_1691002</members>
+        <members>LA_Waiting_Error_ErrorNoAgentHeader_04I8K0000008OIK_2164031</members>
+        <name>CustomLabel</name>
+    </types>
+    <types>
+        <members>Apigee_Auth_Provider__mdt</members>
+        <members>LiveChatTranscript</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>ChatSupportTeam</members>
+        <name>EmbeddedServiceConfig</name>
+    </types>
+    <types>
+        <members>Chat_Transcript_Record_Page</members>
+        <members>LightningService_UtilityBar</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Account-Dealership Layout</members>
+        <members>Apigee_Auth_Provider__mdt-Apigee Auth Provider Layout</members>
+        <members>Apigee_Auth_Provider__mdt-Custom Auth Provider Layout</members>
+        <members>IframeWhiteListUrl-Trusted Domain for Inline Frames Layout</members>
+        <members>LiveChatTranscript-Chat Transcript Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>displayAccountDetails</members>
+        <members>displayCustomerDetails</members>
+        <members>displayVehicleDetails</members>
+        <members>displayDealershipDetails</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Chat_Support_Permission_Set</members>
+        <members>Live_Agent_Setup_Flow</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>Admin</members>
+        <members>Chat Setup Flow Site Profile</members>
+        <members>Dealer</members>
+        <members>FMC Service Agent</members>
+        <members>Ford Credit - Developers</members>
+        <name>Profile</name>
+    </types>
+    <version>53.0</version>
+</Package>

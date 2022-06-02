@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealershipReportedSaleDate__c</fullName>
+    <description>Date the sale was reported by the dealership.</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Dealership Reported Sale Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

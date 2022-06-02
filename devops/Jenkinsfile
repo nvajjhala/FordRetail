@@ -1,0 +1,62 @@
+def parallelStages = [:]
+def orgsToValidate = ['devmerge', 'qacredit', 'sit']
+pipeline {
+    agent any
+    environment {
+        SFDX_HOME = tool 'sfdx-cli'
+        SFDX_DISABLE_DNS_CHECK=true
+
+        devmerge_CREDENTIALS = credentials('ford_sf_devmerge.auth')
+        qacredit_CREDENTIALS = credentials('ford_sf_qacredit.auth')
+        sit_CREDENTIALS = credentials('ford_sf_sit.auth')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Validate orgs') {
+            steps {
+                script {
+                    orgsToValidate.each { org ->
+                            echo "parallel validation:${org}"
+                        parallelStages[org] = {
+                            stage("Authorize an $org org") {
+
+                                sh "eval ${SFDX_HOME}/sfdx auth:sfdxurl:store -f \$${org}_CREDENTIALS -a ford_${org}"
+
+                            }
+                            stage("Validate metadata in $org org") {
+                                try {
+                                    sh "set -o pipefail;${SFDX_HOME}/sfdx force:source:deploy -p force-app/main/default -c -u ford_${org} 2>&1 | tee ford_${org}.log "
+                                }
+                                catch (exc) {
+
+                                    echo "validate $org failed"
+                                    if (env.CHANGE_ID) {
+                                        def sfdxErrorLog = readFile "./ford_${org}.log"
+                                        def commentStr ="```\n$sfdxErrorLog\n```" 
+                                        commentStr = "### $org validation failed\n" + commentStr
+                                        pullRequest.comment(commentStr)
+                                    }
+                                    throw exc
+
+                                }
+
+                            }
+
+                        }
+                    }
+                    parallel parallelStages
+
+                }
+            }
+        }
+
+
+    }
+}
+

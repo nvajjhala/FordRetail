@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EspInd__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This flag indicates that an Extended Service Plan was active for a vehicle at some point during this customer/vehicle ownership cycle.</description>
+    <externalId>false</externalId>
+    <label>Esp Indicator</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

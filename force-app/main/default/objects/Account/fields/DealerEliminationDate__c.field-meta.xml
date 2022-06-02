@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerEliminationDate__c</fullName>
+    <description>Date that the dealership location was eliminated.    A dealership location (sales code) is eliminated when the decision is made to no longer have a dealership at that location.  In most cases, this occurs when the sales in that area are not deemed as high</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Dealer Elimination Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Date</type>
+</CustomField>

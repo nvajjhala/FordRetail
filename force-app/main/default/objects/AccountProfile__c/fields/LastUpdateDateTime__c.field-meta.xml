@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastUpdateDateTime__c</fullName>
+    <description>Timestamp for last profile update</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Last Update DateTime</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerTerminationDate__c</fullName>
+    <description>Date that the Dealer was terminated.  Termination relates to the owner of a dealer and the status of the dealership location.  A dealership is terminated when the current owner goes out of business.  This dealership is either sold to a new owner or held as</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Dealer Termination Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Date</type>
+</CustomField>

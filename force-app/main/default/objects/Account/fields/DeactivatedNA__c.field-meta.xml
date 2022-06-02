@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeactivatedNA__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Will be TRUE if Dealer is not eligible for reservation,order and cart/checkout</description>
+    <externalId>false</externalId>
+    <label>Not Eligible</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,20 @@
+<template>
+    <lightning-card variant="Narrow" title="Dealership Details" icon-name="standard:work_order">
+        <p class="slds-var-p-horizontal_small">
+            <template if:false={dealershipValues}> Loading Dealership Details... </template>
+            <template if:true={dealershipValues}>
+                <lightning-layout multiple-rows="true">
+                    <template for:each={dealershipValues} for:item="item">
+                        <lightning-layout-item size={item.size} key={item.id}>
+                            <div class="slds-var-p-around_small">
+                                <p class="slds-text-title" style="font-weight:bold">{item.title}</p>
+                                <p class="slds-text-body_regular">{item.value}</p>
+                            </div>
+                        </lightning-layout-item>
+                    </template>
+                </lightning-layout>
+            </template>
+        </p>
+        <lightning-map map-markers={mapMarkers} zoom-level="13"></lightning-map>
+    </lightning-card>
+</template>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DealerSubCode__c</fullName>
+    <description>Second level of identification for a dealership.  This field is currently used only for Jaguar and Ford of Europe.</description>
+    <externalId>false</externalId>
+    <label>Dealer Sub Code</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Example A</fullName>
+                <default>false</default>
+                <label>Example A</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

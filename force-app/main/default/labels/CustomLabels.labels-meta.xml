@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I8K0000008OIK_8929154</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I8K0000008OIK_8929154</shortDescription>
+        <value>This is a chat with a FMCC specialist. Do not share sensitive information in chat.</value>
+    </labels>
+    <labels>
+        <fullName>LA_Waiting_Error_ErrorNoAgentBodyApology_04I8K0000008OIK_6442543</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_Waiting_Error_ErrorNoAgentBodyApology_04I8K0000008OIK_6442543</shortDescription>
+        <value>‎</value>
+    </labels>
+    <labels>
+        <fullName>LA_Waiting_Error_ErrorNoAgentBodyRequest_04I8K0000008OIK_1691002</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_Waiting_Error_ErrorNoAgentBodyRequest_04I8K0000008OIK_1691002</shortDescription>
+        <value>Please try again later.</value>
+    </labels>
+    <labels>
+        <fullName>LA_Waiting_Error_ErrorNoAgentHeader_04I8K0000008OIK_2164031</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_Waiting_Error_ErrorNoAgentHeader_04I8K0000008OIK_2164031</shortDescription>
+        <value>All chat agents are not available</value>
+    </labels>
+</CustomLabels>

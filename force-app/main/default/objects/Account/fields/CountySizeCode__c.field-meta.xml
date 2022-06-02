@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CountySizeCode__c</fullName>
+    <description>Code identifying the size group of a county.   For 1999-2000 DMA mapping, counties are broken into 4 size categories based on 1990 US census household counts.  This county relates to DMA CODE 1.  6 = A Counties: All counties belonging, as of 6/30/1990, to the 21 largest metropolitan areas.   7 = B Counties: All counties not included in &quot;A&quot; that are in metropolitan areas with more than 85,000 households.  8 = C Counties: All counties not included in &quot;A&quot; or &quot;B&quot; that either have more than 20,000 households or are in metropolitan areas with more than 20,000 households.  9 = D Counties: All Remaining Counties.</description>
+    <externalId>false</externalId>
+    <label>County Size Code</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>6</fullName>
+                <default>false</default>
+                <label>6</label>
+            </value>
+            <value>
+                <fullName>7</fullName>
+                <default>false</default>
+                <label>7</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AddressStandardizationDate__c</fullName>
+    <description>Date address was last confirmed to be valid through software address standardization.</description>
+    <encryptionScheme>None</encryptionScheme>
+    <externalId>false</externalId>
+    <label>Address Standardization Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Date</type>
+</CustomField>

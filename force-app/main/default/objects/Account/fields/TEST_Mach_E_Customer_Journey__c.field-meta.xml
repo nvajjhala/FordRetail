@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TEST_Mach_E_Customer_Journey__c</fullName>
+    <externalId>false</externalId>
+    <label>TEST Mach E Customer Journey</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pre-Order</fullName>
+                <default>false</default>
+                <label>Pre-Order</label>
+            </value>
+            <value>
+                <fullName>Order Confirmed</fullName>
+                <default>false</default>
+                <label>Order Confirmed</label>
+            </value>
+            <value>
+                <fullName>Scheduled for Production</fullName>
+                <default>false</default>
+                <label>Scheduled for Production</label>
+            </value>
+            <value>
+                <fullName>Vehicle Built</fullName>
+                <default>false</default>
+                <label>Vehicle Built</label>
+            </value>
+            <value>
+                <fullName>Vehicle Shipped</fullName>
+                <default>false</default>
+                <label>Vehicle Shipped</label>
+            </value>
+            <value>
+                <fullName>Vehicle at Dealership</fullName>
+                <default>false</default>
+                <label>Vehicle at Dealership</label>
+            </value>
+            <value>
+                <fullName>Delivered</fullName>
+                <default>false</default>
+                <label>Delivered</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

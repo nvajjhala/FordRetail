@@ -1,0 +1,127 @@
+<project name="ford" default="test" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless" >
+
+    <property name="gitRootDir" value="${basedir}" />
+    <property name="forceAppDir" value="${gitRootDir}/force-app/main/default/" />
+    <property name="antBuildDir" value="${gitRootDir}/build" />
+    <property name="mergeDir" value="${antBuildDir}/merge" />
+
+    <property name="importDir" value="${basedir}/ant" />
+    <import file="${importDir}/base_build.xml" />
+
+    <target name="init">
+        <mkdir dir="${antBuildDir}" />
+        <mkdir dir="${mergeDir}" />
+    </target>
+
+    <macrodef name="sfdx-retrieve-manifest">
+        <attribute name="dx-user" />
+        <attribute name="manifest-file" />
+        <sequential>
+            <exec taskname="sfdx" executable="sfdx" dir="." failonerror="true" failifexecutionfails="true" >
+                <arg value="force:source:retrieve"/>
+                <arg value="-x"/>
+                <arg value="@{manifest-file}" />
+                <arg line="-u @{dx-user}" unless:blank="dx-user"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="mdapi-retrieve-manifest">
+        <attribute name="dx-user" />
+        <attribute name="dest-dir" />
+        <attribute name="manifest-file" />
+        <sequential>
+            <exec taskname="sfdx" executable="sfdx" dir="." failonerror="true" failifexecutionfails="true" >
+                <arg value="force:mdapi:retrieve"/>
+                <arg value="-k"/>
+                <arg value="@{manifest-file}" />
+                <arg line="-u @{dx-user}" unless:blank="dx-user"/>
+                <arg line="-r @{dest-dir}" unless:blank="dest-dir"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+<macrodef name="build-profile-manifest">
+    <!-- possible attribute types are: 'CustomObject', 'CustomObject' -->
+    <attribute name="metadata-type" />
+    <!-- manifest file relative to git/project root folder -->
+    <attribute name="profile-src-manifest-file" />
+    <attribute name="profile-dest-manifest-file" />
+
+    <sequential>
+        <echo message="debug: metadata-type: @{metadata-type}" />
+        <xslt in="manifest/package.xml" out="@{profile-dest-manifest-file}"
+        failOnTransformationError="true"
+        force="true"
+        style="${processorsDir}/build_profile_objectperm_package.xslt">
+
+        <param name="metadataType" type="STRING" expression="@{metadata-type}" />
+        <param name="mergeFromFilename" type="STRING" expression="file://${gitRootDir}/@{profile-src-manifest-file}" />
+    </xslt>
+</sequential>
+
+</macrodef>
+
+<macrodef name="profile-merge-operations">
+
+    <attribute name="merge-metadata-type" />
+
+    <sequential>
+        <build-profile-manifest metadata-type="@{merge-metadata-type}"
+        profile-src-manifest-file="manifest/profile_package.xml"
+        profile-dest-manifest-file="${antBuildDir}/profile_perm_package.xml"
+        />
+
+        <mdapi-retrieve-manifest dx-user="${dx.user}" dest-dir="${antBuildDir}"
+        manifest-file="${antBuildDir}/profile_perm_package.xml"/>
+
+        <unzip src="${antBuildDir}/unpackaged.zip" dest="${antBuildDir}">
+            <patternset>
+                <include name="**/*.profile"/>
+            </patternset>
+        </unzip>
+
+
+        <copy todir="${mergeDir}" overwrite="true">
+            <fileset dir="${forceAppDir}/" includes="**/*.profile-meta.xml"/>
+            <mapper type="glob" from="*.profile-meta.xml" to="*.profile"/>
+        </copy>
+
+
+
+
+        <xslt basedir="${mergeDir}/profiles" destdir="${mergeDir}/output"
+        filenameparameter="current_filename"
+        failOnTransformationError="true"
+        force="true"
+        style="${processorsDir}/merge_profile.xslt">
+        <param name="current_dir" type="STRING" expression="${antBuildDir}/unpackaged/profiles/" />
+        <param name="metadata_type" type="STRING" expression="@{merge-metadata-type}" />
+        <!-- <outputproperty name="indent" value="yes"/> -->
+        <!-- <outputproperty name="{http://xml.apache.org/xslt}indent-amount" value="4"/> -->
+        <mapper type="glob" from="*.profile" to="*.profile"/>
+    </xslt>
+
+    <copy todir="${forceAppDir}/profiles">
+        <fileset dir="${mergeDir}/output" includes="**/*.profile"/>
+        <mapper type="glob" from="*.profile" to="*.profile-meta.xml" />
+    </copy>
+</sequential>
+</macrodef>
+
+<target name="retrieveProfileObjPerm" depends="init">
+    <profile-merge-operations merge-metadata-type="CustomObject" />
+</target>
+
+<target name="retrieveProfileFlsPerm" depends="init">
+    <profile-merge-operations merge-metadata-type="CustomField" />
+</target>
+
+
+<target name="retrieveCode">
+    <sfdx-retrieve-manifest dx-user="${dx.user}" manifest-file="manifest/package.xml"/>
+</target>
+
+<extension-point name="custRetrieveCode" depends="retrieveCode, retrieveProfileObjPerm, retrieveProfileFlsPerm"/>
+
+</project>

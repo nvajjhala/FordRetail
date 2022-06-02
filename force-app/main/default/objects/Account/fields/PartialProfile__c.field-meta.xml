@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PartialProfile__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Flag field identifying the consumer as a partial or full profile consumer.Field contains a Y if consumer is a partial profile consumer, a N if the consumer is a Full Profile consumer.</description>
+    <externalId>false</externalId>
+    <label>Partial Profile?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

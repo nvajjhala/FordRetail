@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastUpdateDateTimeGCPFormula__c</fullName>
+    <externalId>false</externalId>
+    <formula>Text(DateValue(LastUpdateDateTimeGCP__c)) + &apos; &apos; + Text(TimeValue(LastUpdateDateTimeGCP__c - 7))</formula>
+    <label>Last Update Date Time GCP</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OrderReadyNA__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates whether Dealer is eligible for NA(North America) Order journey.Possible values - TRUE,FALSE or N/A</description>
+    <externalId>false</externalId>
+    <label>Order Ready</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>
